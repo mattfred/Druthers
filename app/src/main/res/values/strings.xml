@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Druthers</string>
+    <string name="reject">reject</string>
+    <string name="confirm">Confirm</string>
+    <string name="image">image</string>
+    <string name="next">See Selections</string>
+    <string name="no_movie_selections_yet">No movie selections yet</string>
+</resources>
