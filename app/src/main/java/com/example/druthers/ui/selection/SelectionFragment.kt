@@ -59,6 +59,17 @@ class SelectionFragment : Fragment() {
             }
         }
 
+        viewModel.getError().observe(viewLifecycleOwner) {error ->
+            if (error) {
+                Snackbar.make(
+                    binding.root,
+                    "There was an error getting the movie. Please try again", Snackbar.LENGTH_SHORT
+                ).show()
+                viewModel.clearError()
+            }
+
+        }
+
         viewModel.getLoading().observe(viewLifecycleOwner) {
             binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
             binding.reject.isEnabled = !it

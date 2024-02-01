@@ -27,6 +27,7 @@ class SelectionViewModel(
 
     private val loading = MutableLiveData(false)
     private val movieData: MutableLiveData<Movie?> = MutableLiveData()
+    private val error = MutableLiveData(false)
 
     fun loadMovie() {
         loading.value = true
@@ -36,6 +37,9 @@ class SelectionViewModel(
         coroutineScope.launch {
             movieRepository.getMovieById(title)?.let { movie ->
                 processMovie(movie)
+            } ?: run {
+                error.value = true
+                loading.value = false
             }
         }
     }
@@ -54,6 +58,12 @@ class SelectionViewModel(
     fun getMovie() = movieData
 
     fun getLoading() = loading
+
+    fun getError() = error
+
+    fun clearError() {
+        error.value = false
+    }
 
     override fun onCleared() {
         super.onCleared()

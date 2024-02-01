@@ -1,5 +1,6 @@
 package com.example.druthers.api
 
+import android.util.Log
 import com.example.druthers.models.Movie
 
 /**
@@ -23,21 +24,26 @@ class MovieRepository(
     private val token = "4d9e0ca"
 
     override suspend fun getMovieById(i: String): Movie? {
-        restApi.client.getMovieById(token, i).let { response ->
-            // if response is successful, convert to Movie object and return
-            if (response.isSuccessful) {
-                response.body()?.let { movieDto ->
-                    return Movie(
-                        title = movieDto.title ?: "",
-                        poster = movieDto.poster ?: "",
-                        genre = movieDto.genre ?: "",
-                        type = movieDto.type ?: "",
-                        year = movieDto.year ?: "",
-                        rated = movieDto.rated ?: "",
-                        plot = movieDto.plot ?: "",
-                    )
+        try {
+            restApi.client.getMovieById(token, i).let { response ->
+                // if response is successful, convert to Movie object and return
+                if (response.isSuccessful) {
+                    response.body()?.let { movieDto ->
+                        return Movie(
+                            title = movieDto.title ?: "",
+                            poster = movieDto.poster ?: "",
+                            genre = movieDto.genre ?: "",
+                            type = movieDto.type ?: "",
+                            year = movieDto.year ?: "",
+                            rated = movieDto.rated ?: "",
+                            plot = movieDto.plot ?: "",
+                        )
+                    }
                 }
+                return null
             }
+        } catch (e: Exception) {
+            Log.e("MovieRepository", "Error getting movie by id: $i", e)
             return null
         }
     }
